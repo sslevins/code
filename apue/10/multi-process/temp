@@ -1,0 +1,12 @@
+server:					client:
+	socket();
+	bind();
+	listen();
+
+	for()
+	{
+		accept();		connect();
+		read();
+		sleep(5);
+		write();
+	}

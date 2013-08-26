@@ -1,0 +1,24 @@
+int i;
+
+static int i;
+
+do_it()
+{
+	static int i;
+}
+
+do_it()
+{
+	int i;
+}
+
+do_it()
+{
+	{
+		int i;
+	}
+	printf("%d\n", i);
+
+}
+
+

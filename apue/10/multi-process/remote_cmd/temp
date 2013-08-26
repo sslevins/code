@@ -1,0 +1,65 @@
+client:
+	socket();
+	*bind();
+	connect();
+
+	fgets(stdin);
+
+	fputs();	----> to server
+	shutdown(SHUT_WR);
+
+	while (1)
+		fgets();	<---- from server #shutdown(WR);
+	
+	shutdown(SHUT_RD);
+	close();
+	
+	return 0;
+
+
+server:
+	socket();
+	bind();
+	listen();
+
+	while (1)
+	{
+		accept();
+
+		fork();
+	
+		// parent:
+			close(socketid);
+			continue;
+	
+		// child:
+		while (1)	
+			fgets();	<---- from client #shutdown(WR)
+	
+		popen("cmd", "r");
+	
+		while ((ret = fgetc()) != EOF)
+		{
+			fputc();	----> to client
+		}
+
+		shutdown(WR);
+
+		close();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

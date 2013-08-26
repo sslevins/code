@@ -1,0 +1,59 @@
+client:
+	socket();
+	*bind();
+	connect();
+
+	fgets(stdin);
+
+	fputs();	----> to server
+	shutdown(SHUT_WR);
+
+	while (1)
+		fgets();	<---- from server #shutdown(WR);
+	
+	shutdown(SHUT_RD);
+	close();
+	
+	return 0;
+
+
+server:
+	socket();
+	bind();
+	listen();
+
+	while (1)
+	{
+		accept();
+
+		pthread_create(do_pthread);
+	}
+
+
+do_thread()
+{
+
+	fgets();		<---- from client
+
+	popen(cmd);
+
+	while (fgetc())
+		fputc();	----> to client
+	
+	pthread_exit();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

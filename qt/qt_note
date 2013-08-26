@@ -1,0 +1,43 @@
+su -
+
+yum install qt-core -y
+yum install qt-core-dev -y
+yum install libX11 -y
+yum install libX11-dev -y
+yum install libXext -y
+yum install libXext-dev -y
+yum install libXtst -y
+yum install libXtst-dev -y
+
+
+yum install gstreamer-plugins-base-devel.i686 -y
+yum install libXau-devel -y
+yum install libX11-devel -y
+yum install libXext-devel -y
+
+chown xxx:xxx qt-everywhere-opensource-src-4.8.4.tar.gz 
+
+exit
+
+tar xzvf qt-everywhere-opensource-src-4.8.4.tar.gz 
+
+cd qt-everywhere-opensource-src-4.8.4
+
+./configure
+
+o yes
+
+gmake
+
+gmake install
+
+vi ~/.bashrc
+
+export QTDIR=/usr/local/Trolltech/Qt-4.8.4
+export PATH=$PATH:$QTDIR/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$QTDIR/lib
+
+
+
+
+

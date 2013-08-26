@@ -1,0 +1,55 @@
+#include <vector>
+
+构造和析构函数
+---------------------------------------
+vector<Elem> c				
+	产生一个空的vector，其中没有任何元素
+
+vector<Elem> c(n)			
+	利用元素的default构造函数生成一个大小n的vector
+
+vector<Elem> c(n, value)	
+	产生一个大小为n的vector，每个元素值都是value
+
+vector<Elem> c(beg, end)	
+	产生一个vector，以区间[beg, end]作为元素初值
+
+vector<Elem> c1(c2)			
+	产生另一个同类型vector的副本（所有元素都被拷贝）
+c.~vector<Elem>()			
+	销毁所有元素，以释放内存
+
+赋值操作
+c1 = c2						将c2的全部元素赋值给c1
+c.assign(n, value)			复制n个value，赋值给c
+c.assign(beg, end)			以区间[beg, end]的值对c赋值
+
+c1.swap(c2)					将c1和c2元素互换
+swap(c1, c2)				同上
+
+直接存取vector
+c.at(idx)					返回索引idx所标示的元素
+c[idx]						返回索引idx所标示的元素
+c.front()					返回第一个元素
+c.back()					返回最后一个元素
+
+非变动性操作
+c.size()					返回当前的元素数量
+c.max_size()				返回可容纳的元素最大数量
+c.empty()					判断大小是否未零，等同与size()==0
+
+安插、移除
+c.insert(pos, elem)			在pos位置上插入一个elem副本，并返回新元素位置
+c.insert(pos, n, elem)		在pos位置上插入n个elem副本。
+c.insert(pos, beg, end)		在pos位置上插入区间[beg, end]内所有元素的副本
+c.push_back(elem)			在尾部添加一个elem副本
+c.pop_back()				移除最后一个元素
+c.erase(pos)				移除pos位置上的元素，并返回下一元素的位置
+c.erase(beg, end)			移除[beg, end]区间内的所有元素，返回下一元素的位置
+c.clear()					移除所有元素，将容器清空
+
+迭代器相关函数
+c.begin()					返回一个随机存取迭代器，指向第一元素
+c.end()						返回一个随机存取迭代器，指向最后元素的下一位置
+c.rbegin()					返回一个逆向迭代器，指向逆向迭代的第一元素
+c.rend()					返回一个逆向迭代器，指向逆向迭代的最后一个元素的下一位置

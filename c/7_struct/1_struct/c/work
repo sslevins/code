@@ -1,0 +1,18 @@
+struct Student
+{
+	int id;
+	char name[128];
+	int english;
+	int math;
+	int history;
+}
+
+struct Student arr[10];
+
+arr[0] ~ arr[9] englisth / 10
+arr[0] ~ arr[9] math / 10
+arr[0] ~ arr[9] history / 10
+
+arr[max].id 
+arr[max].name arr[max].english arr[max].history
+arr[max].e+arr[max].m+arr[max].h / 3

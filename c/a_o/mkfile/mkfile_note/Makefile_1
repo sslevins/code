@@ -1,0 +1,23 @@
+SRCS = 1.o 2.o main.o
+
+PWD = $(shell pwd)
+# 变量PWD的值，即$(PWD)，是shell命令pwd的结果
+
+out: $(SRCS)
+	@echo $(PWD)	# @表示，不打印该命令本身
+	@gcc $^ -o $@
+# $^ 代表所有的依赖文件名
+# $@ 代表该规则的目标名
+
+%.o:%.c
+	@gcc -c $<
+# $< 代表依赖文件中的第一个文件名
+# %.o:%c 等价于：
+# 1.o:1.c 
+# 2.o:2.c 
+# main.o:main.c
+
+clean:
+	@rm *.o out
+
+.PHONY: clean

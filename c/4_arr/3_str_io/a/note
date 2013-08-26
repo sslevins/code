@@ -1,0 +1,66 @@
+		limits.h 的一些符号常量
+CHAR_BIT		一个 char 的位数
+CAHR_MAX		char 类型的最大值
+CHAR_MIN		char 类型的最小值
+SCHAR_MAX		signed char 类型的最大值
+SCHAR_MIN		signed char 类型的最小值
+UCHAR_MAX		unsigned char 类型的最大值
+SHRT_MAX		short 类型的最大值
+SHRT_MIN		short 类型的最小值
+USHRT_MAX		unsigned short 类型的最大值
+INT_MAX			int 类型的最大值
+INT_MIN			int 类型的最小值
+UINT_MAX		unsigned int 类型的最大值
+LONG_MAX		long 类型的最大值
+LONG_MIN		long 类型的最小值
+ULONG_MAX		unsigned long 类型的最大值
+LLONG_MAX		long long 类型的最大值
+LLONG_MIN		long long 类型的最小值
+ULLONG_MAX		unsigned long long 类型的最大值
+
+
+		float.h 中的一些符号常量
+FLT_MANT_DIG		float 类型的尾数位数
+FLT_DIG			float 类型的最少有效数字位数（十进制）
+FLT_MIN_10_EXP		带有全部有效数字的 float 类型的负支付的最小值（以10为底）
+FLT_MIN			保留全部精度的 float 类型正数的最小值
+FLT_MAX			float 类型整数的最大值
+FLT_EPSILON		1.00 和比 1.00大 的最小的 float 类型值之间的差值
+
+
+		转换说明符及作为结构的打印输出
+%a			浮点数，十六进制数字和 p- 计数法（C99）
+%A			浮点数，十六进制数字和 P- 计数法（C99）
+%c			一个字符
+%d			有符号十进制整数
+%e			浮点数，e-计数法
+%E			浮点数，E-计数法
+%f			浮点数，十进制计数法
+%i			有符号十进制整数（与%d相同）
+%o			无符号八进制整数
+%p			指针
+%u			无符号十进制整数
+%x			使用十六进制数字 0f 的无符号十六进制整数
+%X			使用十六进制整数 0F 的无符号十六进制整数
+%%			打印一个百分号
+
+
+		printf() 修饰副
+-			项目是左对其的：也就是会把项目打印在字段的左端开始处，示例：“%-20s”
++			有符号的值若为正，则显示带加号的符号：若为负，则显示带减号的符号，示例：“%+6.2f”
+（空格）		有符号的值若为正，则显示空格；若为负，则显示带减号的符号，示例：“% 6.2f”
+#			使用转换说明的可选形式。若为 %o 格式，则以 0 开始；若为 %x 和 %X 格式，则以 0x 和 0X 开始。对于所有浮点形式，# 保证了即使不跟任何数字，也打印一个小数点字符。
+0			对于所有的数字格式，用 0 而不是使用空格填充字读啊宽度。如果出现-标志或者指定了精度（对于整数）则忽略该标志。示例：“%010d”和“%08.3f”
+digit(s)		字符宽度的最小值。如果该字段不能容纳要打印的数或者字符串，系统就会使用更宽的字段。示例：“%4d”
+.digit(s)		精度。对于%e、%E 和 %f 转换，是将要在小数点的右边打印的数字的文书。对于 %s 转换，是将要打印的字符的最大数目。对于整数转换，是将要打印的数字的最小位数；如果必要，要使用前导零来达到这个位数。只使用“.”表示其后跟随一个零，所以%.f 与 %.0f 相同。示例：“%5.2f”打印一个浮点数，它的字段宽度为5个字符，小数点后有两个数字。
+h			和整数转换说明符一起使用，表示一个 short int 或 unsigned short int 类型数值。示例："%hu"、"%hx" 和 "%6.4hd"
+hh			和整数转换说明符一起使用，表示一个 signed char 或 unsigned char 类型数值。示例："%hhu"、"%hhx" 和 "%6.4hhd"
+j			和横竖转换说明符一起使用，表示一个 intmax_t 或 uintmax_t值。示例："%jd" 和 "%8jX"
+l			和整数转换说明符一起使用，表示一个 long int 或 unsigned long int 类型值
+ll			和整数转换说明符一起使用，表示一个 long long int 或 unsigned long long int 类型值（C99）
+L			和浮点转换说明符一起使用，表示一个 long double 值。
+示例："%Lf" 和 "%10.4Le"
+z			和整数转换类型符一起使用，表示一个 size_t 值（sizeof 返回的类型）（C99）.示例："%zd" 和 "%12zx"
+
+
+

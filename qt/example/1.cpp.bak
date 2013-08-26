@@ -1,0 +1,77 @@
+#include <QApplication>
+#include <QWidget>
+#include<QTreeView>
+#include<QDirModel>
+#include<QHBoxLayout>
+#include<QSplitter>
+#include<QStringListModel>
+#include<QListView>
+#include<QStandardItemModel>
+
+int main(int argc, char *argv[]) 
+{
+	QApplication app(argc, argv);
+
+	//以下是QStandardItemModel的简单使用，只需替换view的model为qstmodel就可以看到效果
+	QStandardItemModel *qstmodel = new QStandardItemModel();
+	QStandardItem* item1    = new QStandardItem("item1");
+	QStandardItem* item2    = new QStandardItem("item2");
+	QStandardItem* item3    = new QStandardItem("item3");
+
+	item1->appendRow(item2);
+	qstmodel->appendRow(item1);
+	qstmodel->appendRow(item3);
+	//以下是StringListModel的示例，只需替换view的model为mod就可以看到效果，QListView也适用
+	QStringList names;
+	names<<"a"<<"b";
+	QAbstractItemModel *mod=new QStringListModel(names);
+	//要注意的是，这里把StringListModel作为一个QAbstractItemModel来使用。这样我们就可以
+	//使用model中的抽象接口，而且如果将来我们用别的model代替了当前这个model,这些代码也会照样工作。
+	//QListView提供的列表视图足以满足当前这个model的需要了。
+	QDirModel *model=new QDirModel;
+	QTreeView *view=new QTreeView;
+	//这里设置Model即可
+	view->setModel(model);
+	view->setSelectionMode(QAbstractItemView::SingleSelection);
+	view->setAutoFillBackground(true);
+	//设置列是否隐藏
+	//      view->setColumnHidden(1,true);
+	//      view->setColumnHidden(2,true);
+	//      view->setColumnHidden(3,true);
+	//   widget->setAutoFillBackground(true);
+	QHBoxLayout *blayout=new QHBoxLayout;
+	blayout->addWidget(view);
+	blayout->addStretch();
+	QSplitter *splitter = new QSplitter; 
+	splitter->setLayout(blayout);
+	//splitter->addWidget(view);
+	splitter->show();
+	//     widget->show();
+	return app.exec();
+
+
+/*
+	QApplication app(argc, argv);
+	QSplitter *splitter = new QSplitter;
+	//从缺省目录创建数据
+
+	QDirModel *model = new QDirModel;
+
+	QTreeView *tree = new QTreeView(splitter);
+	//配置一个view去显示model中的数据，只需要简单地调用 setModel(),并把目录model作为参数传递
+	tree->setModel(model);
+	//setRootIndex()告诉views显示哪个目录的信息，这需要提供一个model index,然后用这个
+	//model index去model中去获取数据,这里默认的是当前路径
+	tree->setRootIndex(model->index(QDir::currentPath()));
+	QListView *list = new QListView(splitter);
+	list->setModel(model);
+	//index()这个函数是QDirModel特有的，通过把一个目录做为参数，得到了需要的model index
+	//其他的代码只是窗口show出来,进入程序的事件循环就好了
+	list->setRootIndex(model->index(QDir::currentPath()));          
+
+	splitter->setWindowTitle("Two views onto the same directory model");
+	splitter->show();
+
+	return app.exec();
+	*/
+}

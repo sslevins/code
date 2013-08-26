@@ -1,0 +1,39 @@
+checkout
+	svn checkout svn://192.168.1.110/xxxxxxx
+	svn checkout svn://192.168.1.110/xxxxxxx xxxxxx
+	svn checkout -r 10 svn://192.168.1.110/xxxxxx xxxxxx
+	svn info working-copy
+
+update
+	svn update
+	svn update xxx.c aaa/ bbb/
+
+add
+	svn add lib
+	svn status
+	svn status lib
+	svn commit -m "xxxxxx"
+	svn commit -m "xxxxxx" lib
+
+svn copy a.txt b.txt
+
+svn log a.txt
+svn log -v a.txt
+
+svn move a.c b.c
+
+svn diff a.c
+svn diff -r 19:21 a.c
+svn diff -r BASE:HEAD svn://xxxxxx/a.c
+
+svn revert a.c
+svn resolved a.c
+
+svn blame a.c
+
+svn merge -r 45:HEAD \ svn://xxx/xxx/branches/xxx
+
+
+
+
+

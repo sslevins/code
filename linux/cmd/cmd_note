@@ -1,0 +1,599 @@
+目录路径的范畴 scope
+	/		Linux 提供的系统文件（称为“根目录”）
+	/usr		更多提供给Linux的系统文件
+	/usr/games 	游戏。
+	/usr/local	个别计算机专用的系统文件。比如说，个别人另外安装的软件包。
+	/usr/X11R6	构成X窗口系统的文件。
+	在实际使用中，/ 和 /usr 之间没有很明显的差别，但是在概念上，/ 属于较低的层级，而且比较接近于操作系统。
+目录路径的分类 category
+	程序类
+		bin	程序文件（通常是已编译可直接执行的binary格式）。
+		sbin	专供管理员使用的程序文件（通常也是binary格式）。
+		lib	供程序使用的函数库。
+		libexec	供其他程序（而非用户）调用的程序。
+	文件类
+		doc	说明文件
+		info	可使用Emacs的内置辅助系统观看的说明文件。
+		man	可用 man 查看的在线说明文件。该类文件通常存储成压缩格式，或是含有man才能读懂的排版指令。
+		share 	针对个别程序的额外文件，想安装指示与范例。
+	配置类
+		etc	系统性的配置文件
+		init.d	与开机程序有关的配置文件。
+		rc.d	与 init.d 相同。
+	编程类
+		include	C程序语言的头文件（.h）。
+		src	程序源代码。
+	显示类
+		fonts	字体。
+		X11	X窗口系统的文件。
+	硬件类
+		dev	设备文件。内核提供给应用程序访问硬件的接口。
+		mnt	挂在点
+	运行状态类
+		var	存放计算机运行状态的文件。
+		lock	锁定文件。程序创建锁定文件，让其他程序（通常是统一个相同程序）知道自己的存在。这通常是为类避免其他程序进行某些操作，或避免统一个系统上同时运行多个一样的程序。
+		log	记录重要系统时间的日志文件。包括错误、警告以及信息性的消息。
+		tmp	供程序或用户临时使用的存储空间。
+		proc	操作系统的状态。
+
+操作系统目录
+	/boot		用于启动系统的文件。
+	/lost+found	供磁盘修复工具存放恢复好的受损文件。
+	/proc		Linux内核用于提供进程运行状态的虚构目录。/proc 目录下的文件并不实际存在于磁盘中，而是内核虚拟出来的。当你读取它们时，内核才实时提供信息。因此，/proc 下的所有文件的长度都是0，而且大部分都是只读的。
+		/proc/ioports	I/O硬件的列表。
+		/proc/version	操作系统的版本。
+		/proc/uptime	系统开机时间。也就是从系统开始运行至目前所经过的秒数。
+		/proc/nnn	系统中的每一个进程都有一个自己专属的/proc/nnn目录，其中的nnn是进程的标识符（PID）。此目录下含有个别进程的环境信息。
+
+
+用户
+---------------------------------
+logname		/usr/bin	显示你的登录名称。
+
+whoami		/usr/bin	显示当前的有效身份。
+
+id		/usr/bin	显示某用户的UID与所有GID。
+		-u		只输出有效用户的UID。
+		-g		只输出有效用户组的GID。
+		-G		只输出用户所属的每个组（有效组除外）的GID。
+		-n		只输出名称（用户与组），而非UID与GID数值。此
+				选项必须结合-u，-g 或 -G 一起使用。
+		-r		只输出UID或GID数值，而非名称。必须搭配-u、-g
+				或 -G 的其中之一的选项一起使用。
+
+useradd [options] username	/usr/sbin	开设一个新帐号。
+				-d		设置用户的个人目录。
+				-u uid	设定用户的UID。除非你明确知
+						道自己在做些什么，否则应该省
+						略此选项，接受系统的自动分配。
+				-g group	设定用户的初始组（即默认组）
+						。group必须是一个已存在的组
+						名称或GID值。
+				-G grou1, ...	让用户同时成为group1、group2
+						等现有组的成员。
+				-m		自动建立新帐号的操作环境，包
+						括创建个人目录，将系统框架目
+						录的内容赋值到新建的个人目录
+						。框架目录中包含有最基本的初
+						始化文件（例如
+						~/.bash_profile），让用户可
+						以顺利使用新环境。
+
+
+userdel [-r] username		撤销一个旧帐号。
+
+
+usermod [options] username	/usr/sbin	修改原有帐号。
+				-d dir		将用户的个人目录改为dir。
+				-l username	将用户的登录名称改为username
+						。不过，如果系统上有任何东西
+						会依赖原本的登录名称，篡改登
+						录名可能会有严重的后遗症。
+				-g group	将用户的初始组（默认组）改为
+						group(group必须是现有组的名
+						称或GID）。
+				-G group1, ...	让用户成为额外组的成员。如果
+						列出的group1、group2 ... 组
+						里不含用户原本的从属组，则该
+						用户不再隶属于那些没列名的组
+						。
+				-L		冻结帐号，让用户无法登录。
+				-U		让 -L 所冻结的帐号重新恢复效
+						力。
+
+
+passwd [options][username]	改变某帐号的密码。
+
+su [options][username] 	/bin		改变身份。
+			-l		运行login shell （获得新身份的操作环
+					境）。这是你每次都会想要使用的选项，
+					因为这样才能自动获得正确的搜索路径。
+			-m 		让新的 shell 继承当前的环境变量。
+			-c command	以新身份运行此 command，然后回到原本
+					的身份。
+
+groups [usernames]	/usr/bin	列出用户所属的每一个组。组代表一群用
+					户共同的身份（权限）。如果将某权限赋
+					予某组，则该组的全体成员都将获得该权
+					限。
+
+
+groupadd [options] group	/usr/sbin	成立一个新组。
+				-g gid		指定新组的GID，而不让系统分
+						配。
+				-f		若指定的组名称与现有组重复，
+						则显示错误信息，然后结束。
+
+groupdel group			/usr/sbin	撤销一个旧组。
+
+
+groupmod [options] group	/usr/sbin	修改组。
+				-g gid		改变组的GID。
+				-n name		将组的名称改成name
+
+
+
+文件基本操作
+-----------------------------------
+ls [options] [files]	/bin	列出目录内容
+			-a	列出所有文件（包括隐藏文件）
+			-l	以长格式显示文件属性。加上 -h (human-readable) 选项表示以千字节、兆字节等适合用户阅读的单位来取代字节
+			-F	以象征类型的符号来修饰特定文件名。各种符号象征的类型如下
+				/ 目录
+				* 可执行文件
+				@ 符号链接
+				| 命名管道
+				= 通信管道
+				提醒：以上符号并非文件名的一部分，而是 ls 在显示时自己加上去的
+			-i	在文件名之前加注该文件的 inode 的编号	
+			-s	在文件名之前加注该文件所占的块数（1块=1024b）
+			-R	遇到目录时，递归列出其内容
+			-d	列出目录本身，而不是其内容
+
+
+cp [options] files (file|dir)	/bin	复制文件
+				-p	连同原文件的访问模式、时间戳也一并复制给新文
+					件，如果你的权限允许，新文件的拥有者与所属组
+					也和旧文件一样。如果没有刻意指定本选项，新文
+					件的拥有这是你（因为该文件是你创建的），修改
+					时间是当前时间，而访问模式则是原文件的访问模
+					式与你的 umask 的交集。
+				-i	交互模式。在覆盖目标文件之前，先征求用户的一
+					件。
+				-f	强行赋值。即使目标文件已存在，也一律无条件改
+					写。
+
+
+mv [options] source target	/bin	改变文件位置（相当于修改文件名）
+				-i	交互模式。覆盖目标文件之前，先征求用户的意
+					见。
+				-f	强制移动。即使目标文件已存在，也一律无条件覆
+					盖。
+
+
+rm [options] files|directories	/bin	删除文件
+				-i	交互模式。删除每个文件之前，都要先征求用户的
+					意见。
+				-f	强制删除。忽略任何错误或警告。
+				-r	递归删除目录与其内容。谨慎使用，特别是搭配 
+					-f 选项时。
+
+
+ln [options] source target	/bin	制作链接（替换文件名）。符号链接以“路径”来表
+					示另一个文件。若删除原文件，符号链接将因为指
+					向不存在路径而变得无效。另一方面，硬链接是硬
+					盘上某物理文件的第二个名称。删除原文件并不会
+					造成链接失败，你仍可以通过硬链接来访问原文件
+					的内容。符号链接可跨磁盘分区，因此它们只是对
+					源文件路径的引用而已，但是硬盘链接则不可以。
+					符号链接的对象可以是目录，但是硬链接不可以，
+					除非你是 superuser 而且使用 -d 选项。
+				-s	制作符号链接（默认行为是制作硬链接）
+				-i	交互模式。覆盖目标文件前先征求用户的一件。
+				-r	强制模式、无条件予以覆盖。
+
+目录操作
+-------------------------------------------
+cd [directory]		内置	改变工作目录。没指定任何目录时，cd 默认切换到你的
+				个人目录。
+
+
+pwd				内置	显示当前工作目录的绝对路径名称。
+
+
+mkdir [options] directories	/bin		创建目录
+				-p		自动创建上级目录。使用此选项时，必须
+						提供完整的目录路径（而不是只有目录名
+						称），mkdir 会自动建立不存在的目录结
+						构。
+				-m mode		建好新目录后，将该目录的访问模式设定
+						为 mode。没有刻意指定访问模式时，新
+						目录的访问模式由shell的umask来控制。
+
+
+rmdir [options] directories	/bin		删除空目录
+				-p		如果提供一个目录路径（而并非只有目录
+						名称），则连同路径上的目录也一并自动
+						删除，不过，前提是每个目录都必须是空
+						目录。
+
+rm -r		删除非空目录及其内容
+
+
+显示文件内容
+---------------------------------------------------
+cat [options] [files]		/bin	原样显示文件内容。
+				-T	以 “^T” 表示制表符（tab）
+				-E	以 “$” 代替换行符（newlines）
+				-v	以一种适合阅读的格式来表示不可显示的字符。
+				-n	每行之前加注编号。
+				-b	非空白行之间加注编号。
+				-s	将连续多行空白压缩成一行空白。
+
+
+less [options][files]		/usr/bin	分页显示。
+				-c		显示下一夜之前先清屏幕
+				-m		显示较为详尽的提示信息以及已显示的文
+						件内容百分比。
+				-N		加注行好。
+				-s		将多行空白压缩成单行空白。
+				-S		阶段超过画面宽度的文本行（不换行）。
+
+
+head [options] [files]		/usr/bin	只显示文件内容的开始处。
+				-N		输出前 N 行内容。
+				-n N		
+				-c N		输出前 N 个字节。
+
+
+tail [options] [files]		/usr/bin	只显示文件内容的结尾处。
+				-N		显示最后 N 行。
+				-n N		
+				+N		从开始的前 N 行之后开始显示。
+				-c N		显示最后 N 个字节。
+
+nl [options] [files]		/usr/bin	标示行号。
+				-b [atn]	加注编号到每一行（a），或非空白行
+						（t），或不编号（n）。（默认为a）
+				-w N		设定编号的位数。（N默认值为6）
+
+
+od [optons] [files]		/usr/bin	以八进制来显示数据。
+				-N B		只显示每个文件的前 B 个字节。默认行
+						为是显示整个文件。
+				-j B		略过每个文件的前B个字节。默认值为0。
+
+
+xxd [options] [files]		/usr/bin	以十六进制来显示数据。
+				-l N		只显示前 N 个字节。（默认行为是显示
+						整个文件）
+				-c N		每行显示 N 个字节。（默认为16）
+				-g N		以 N 个字节为一组，两组之间以空格像
+						个。N 的默认值为 2 。
+				-b		以二进制数表示数据
+				-u		使用大写的十六进制数字
+
+文件属性
+--------------------------------------------
+stat [options] files		/usr/bin	显示文件与目录的属性。你可以看到文件
+						的名称、字节数、所占用的块数、I/O单
+						位、文件类型、该文件所在的设备类型与
+						编号、Inode编号、硬链接的数量、访问
+						模式、拥有者的UID与名称、所属组的GID
+						与名称、最后一次访问时间、内容修改时
+						间、状态改变时间。
+				-l		跟随符号链接，并汇报链接对象。
+				-f		汇报文件所在的文件系统，而非文件本身
+						。你可以看到文件名、文件系统的标识符
+						、该文件系统可接受的文件名长度、文件
+						系统的类型、块的总数、剩余数、有效剩
+						余数与单位大小、Inodes的总数与剩余数
+						。
+
+
+wc [options] [files]		/usr/bin	计算文本文件的字节数、单词数、行数。
+				-l		只显示行数。
+				-w		只显示单词数。
+				-c		只显示字节（字符）数。
+				-L		找出每个文件中最长的行并显示该行的长
+						度（以字节为单位）。
+
+
+du [options] [files|directories]	/usr/bin	显示文件与目录所占磁盘空间。
+					-b -k -m	以字节、千字节或兆字节为计算
+							单位
+					-B N		以 N （默认值为1024）为块大
+							小的计算单位。
+					-h -H		输出适合用户阅读的单位。
+					-L		跟随符号链接，并测量链接目标
+							的大小。
+					-s		只显示工作目录所占总空间
+
+
+file [options] files		/usr/bin	识别（猜测）文件的类型。
+				-b		省略文件名（最左栏）。
+				-i		以 MIME 类型名称来代替正常输出信息。
+				-L		跟随符号链接，汇报链接目标的文件类型
+						，而不是告诉你那是符号链接
+				-z		如果受测文件为压缩文件，则检验解压缩
+						后的额内容，然后汇报其内容，而不是告
+						诉你那是压缩文件。
+
+
+touch [options] files		/bin		改变文件与目录的时间戳。
+				-a		只改变访问时间。
+				-m		值改变修改时间。
+				-d timestamp	设定文件的时间戳。
+
+
+chown [options] user_spec files		/bin	改变文件与目录的拥有者。user_spec参
+						数有下列几种可能性：
+						1. 一个用户名称（或UID数值）。只设定
+						拥有者。 
+						2. 一个用户名称（或UID数值），其后跟
+						着一个冒号（：）与一个组名称（或GID
+						数值）。设定拥有者与所属组。
+						3. 一个用户名称（或UID数值），其后跟
+						着一个冒号（：）。设定拥有者，以该用
+						户的登录组为本文见的所属组。
+						4. 一个冒号后面接着一个组名称（或GID
+						数值）。值设定所属组。
+					--dereference	跟随符号链接，并作用在链接目
+							标。
+					-R	递归作用在整个子目录的每一个文件与子
+						目录上。 
+
+
+chgrp [options]	group_spec files 	/bin	改变文件与目录的从属组。group_spec参
+						数有下列几种形式：
+						1. 一个组名称或GID数值。
+						2. --reference=file，以另一个文件的
+						所属组作为本文件的所属组。
+					--dereference	跟随符号链接，作用在链接对象
+							，而非链接文件本身。
+					-R	递归改变整个子目录的组拥有权。
+
+
+chmod [options]	permissions files	/bin	改变文件与目录的访问模式。
+						permissions参数有三种形式：
+						1. --reference=file，引用另一个文件
+						的访问模式。
+						2. 三位数的八进制数字，以位形式之处
+						文件的绝对权限 依次表示拥有者，所属
+						组、其他人的权限。
+						3. 一个或多个以逗号相隔的字符串，这
+						些字符串描述绝对权限或相对权限（相对
+						于文件原有的权限）。
+
+文件位置
+-----------------------------------------------
+find [dir] [exp] [action]	/usr/bin	在目录树中找出特定条件的文件，并处理
+						找到的文件。
+				-name pattern	按名称查找
+				-path pattern	按路径名称查找
+				-lname pattern	按符号链接的目标查找
+				-iname pattern	效果等同于 -name，但不区分大小写
+				-ipath pattern  效果等同于 -path，但不区分大小写
+				-ilname pattern	效果等同于 -lname，但不区分大小写
+				-regex regexp	路径（相对于搜索起点）符合regexp正则
+						表达式的文件
+				-type f|d|l|b|c|p|s	只搜索普通文件(f)、目录(d)、符
+							号链接(l)、块 设备(b)、字符设
+							备(c)、具明管道(p) 或 socket(s)
+				-atime N	找出最近访问时间(-atime)、最近修改时间
+						(-mtime)
+				-ctime N	或状态改变时间(-ctime)刚好在N*24小时之
+						前的文件。
+				-mtime N	使用+N表示“超过N天”，-N表示“少于N天”。
+
+				-amin N		找出最近访问时间(-amin)、最近修改时间
+				-cmin N		(-mmin)或状态改变时间(-cmin)刚好在N分
+				-mmin N		钟之前的文件。使用+N表示“超过N分钟”，
+						-N表示“不到N分钟”。
+						
+				-anewer other_file	找出最近访问时间（-anewer）、
+				-cnewer other_file	最近状态改变时间（-cnewer）或
+				-newer other		内容修改时间（-newer）比另一个
+							文件（other_file）更近的文件
+
+				-maxdepth N	限制搜索深度（相对于搜索起点的子目录深
+				-mindepth N	度）至少（-mindepth）或最深（-maxdepth）
+						为 N 层。
+
+				-size N[bckw]	找出单位大小为N的文件。b、c、k、w 分别
+						代表块、单字节字符、千字节、双子接词组。
+						+N表示“大于N”，-N表示“小于N”。
+				-user username	拥有者为username用户。
+				-group gpname	拥有者为gpname组。
+
+				-perm mode	找出访问模式等于 mode 的文件或目录。
+				-perm -mode	使用-mode表示指定位必须全部被设定，而
+				-perm +mode	+mode表示任何指定位之一被设定就算符合
+						条件。
+
+				-print		输出文件的相对路径（相对于搜索起点）。
+				-exec cmd \;	运行指定的 shell 命令（cmd）。你所描述
+						的cmd，包括命令末端的分号在内，其中的
+						任何shell特殊字符前都必须加上\符号，以
+						避免shell立刻运行它们。在cmd里，你用“
+						{}”符号来表示find所找出的文件。
+
+
+which file			/usr/bin	于搜索路径中找出特定的可执行条件，并显
+						示该文件的位置（外部命令）。
+
+type [options] commands		内置		bash 的内置命令，其效果类是 which。
+
+whereis	[options] files		/usr/bin	找出可执行文件、文档、源程序等。
+				-b		只查找可执行文件
+				-m 		只查找manpages
+				-s		值查找源程序
+
+文件文本操作
+-----------------------------------------
+grep [options] pattern [files]		/bin	于文件中找出符合正则表达式条件的文本行。
+					-v	只输出合模文本行之外的其他文本行（也就
+						是不符合正则表达式的文本行）。
+					-l	只输出含有合模文本行的文件的文件名，而
+						非合模文本行本身。
+					-L	只输出完全不含合模文本行的文件的文件名。
+					-o	只输出符合文本行的数量。
+					-n	输出合模文本行之前，先输出该文本行于原
+						文件中的行好。
+					-b	输出合模文本行之前，先输出该文本行距离
+						文件首的相对位置。
+					-l	匹配时不区分大小写。
+					-w	匹配完整词（必须整个词都符合模板）。
+					-x	只匹配完整文本行（必须整行文本都符合模
+						板）
+					-A N	先输出合模文本行，然后输出原文件中紧接
+						在合模文本行之后的 N 行文本。
+					-B N	先输出原文件中出现在合模文本行之前的 N
+						行文本，然后才输出合模文本行。
+					-C N	效果想段关于-A N -B N，也就是输出原文件
+						中出现在合模文本行之前与之后的N行文件。
+
+
+
+文件压缩
+----------------------------------------------
+gzip [options] [files]		/bin		将文件压缩成GNU Zip格式的
+						压缩文件
+gunzip		还原GNU Zip格式的压缩文件（相当于 gzip -d）
+zcat			通过stdin/stdout压缩或还原文件（支持GNU Zip 与 Unix传统格式）
+bzip2			将文件压缩成BZip格式的压缩文件
+bunzip2			还原Bzip格式的压缩文件
+zip			将文件压缩成WinZip格式的压缩文件
+unzip			还原WinZip格式的压缩文件
+
+gzip file	压缩file成为file.gz。原本的file会消失。
+gunzip file.gz	解压file.gz以产生file。原本的file.gz会消失。
+tar czf myfile.tar.gz dirname	封装整个dirname目录，然后压缩封装文件。
+tar xzf myfile.tar.gz		先解压压缩文件，然后还原封装文件。
+
+tar cZf myfile.tar.gz dirname	封装整个dirname目录，然后压缩封装文件。
+tar tZf myfile.tar.gz		显示压缩文件的内容。
+tar xZf myfile.tar.gz		先解压压缩文件，然后还原封装文件。
+
+tar cjf myfile.tar.bz2 dirname	封装整个dirname目录，然后压缩封装文件。
+tar tjf myfile.tar.bz2		显示压缩文件的内容。
+tar xjf myfile.tar.bz2		先解压压缩文件，然后还原封装文件。
+加上 v 选项，可是tar输出正在处理的文件的名称。
+
+zip myfile.zip file1 file2 file3 .... 	将一系列文件压缩成myfile.zip。
+zip -r myfile.zip dir1 dir2 dir3 ...	递归压缩每个目录，产生一个myfile.zip文件
+unzip -l myfile.zip			显示压缩文件的内容。
+unzip myfile.zip			解压整个.zip压缩文件
+
+tar [options] [files]	/bin	将多个文件（连同目录结构）压缩成合适传输
+				或备份的单一文件
+			-c 	产生压缩文件。你必须在命令行中输入文件名
+				与目录名。
+			-f file	从压缩文件读出指定的文件或是将文件写入压
+				缩文件。
+			-z	使用gzip压缩要写入的数据或是用gunzip解压
+				要读取的数据。
+			-j	使用bzip2压缩要写入的数据或是用bunzip2解
+				压要读取的数据。
+				uncompress解压要读取的数据。
+			-v	输出操作状态。
+
+软件安装
+---------------------------------------------------
+rpm [options] [files]	/bin	手动安装RPM包，它不仅会安装软件，还会检查你
+				的系统是否符合先决条件。
+rpm -q package_name	找出package_name是否安装于系统中以及所安装的版本。
+rpm -ql package_name	列出特定（已安装）包所包含的文件。
+rpm -qi package_name	显示特定（已安装包）的一般信息。
+rpm -qa 		列出所有已安装的RPM包。
+rpm -qf filename	显示filename所属包的名称。
+rpm -ivh package1.rpm package2.rpm...	安装先前未安装过的新包。
+rpm -Fvh package1.rpm package2.rpm...	使用指定的RPM文件来更型已安装的旧包。如果指定了未安装的包，则予以忽略（不安装）。
+rpm -e package_names	删除某个已安装包。注意，此命令所需的参数是不含版本编号的包名。
+
+yum [options] [commamd] [packages]
+
+1 安装
+yum install package1 	安装指定的安装包package1
+
+2 更新和升级
+yum update 		全部更新
+yum update package1 	更新指定程序包package1
+yum upgrade package1 	升级指定程序包package1
+
+3 查找和显示
+yum info package1 	显示安装包信息package1
+yum list 		显示所有已经安装和可以安装的程序包
+yum list package1 	显示指定程序包安装情况package1
+信息
+yum search string 	根据关键字string查找安装包
+
+4 删除程序
+yum remove package1 删除程序包package1
+yum deplist package1 查看程序package1依赖情况
+
+
+ifconfig 			/sbin	用于观察或设定网络接口参数的工具。其
+					信息包含网卡的硬件地址、IP地址、局域
+					网的广播地址、网络掩码、启动状态与信
+					息框大小、接受与发送数据量统计。
+ifconfig -a	列出所有已启动的网络接口。
+ifconfig eth1 ... netmask ...	设定网络接口的 IP 参数。
+ifconfig eth1 down	关闭特定网络接口。
+ifconfig eth1 up	重新启动特定网络接口。
+
+ping [options] host	/bin	检查本地与远程主机之间的连通状态。
+			-c N	测试N次后自动停止。
+			-i N	每次测试之间等待 N 秒钟的间隔（默认1秒）
+
+网络连接
+----------------------------------------------
+ssh [options] host [command] 	/usr/bin	安全地登录远程主机或运行远程
+						命令。
+				-l uername	以username帐号登录远程系统。
+						如不指定，ssh使用你当前的本
+						地帐号。
+
+
+telnet [options] host [port]	/usr/bin	登录远程主机（不安全）。
+
+echo [options] strings 		/bin/echo 	输出一段简单文本到 stdout。
+
+clear		/usr/bin	 清理屏幕或窗口。
+
+sleep 		/bin		休眠一段时间.可以接一个整数（秒），也可以接
+				一个整数后面接着一个计时单位：s、m、h、d，分
+				别代表“秒”、“分”、“时”、“日”。
+
+
+test命令常用参数
+文件测试：
+-d name		测试name是否为一个目录
+-f name		测试name是否为普通文件
+-L name		测试name是否为符号链接
+-r name		测试name文件是否存在且为可读
+-w name		测试name文件是否存在且为可写
+-x name		测试name文件是否存在且为可执行
+-s name		测试name文件是否存在且其长度不为0
+f1 -nt f2	测试f1是否比f2更新
+f1 -ot f2	测试f1是佛比f2更旧
+
+字符串测试：
+s1 = s2		测试两个字符串的内容是否完全一样。
+s1 !- s2	测试两个字符串的内容是否有差异。
+-z s1		测试s1字符串的长度是否为0
+-n s1		测试s1字符串长度是否不为0
+
+整数测试：
+a -eq b		测试a与b是否相等
+a -ne b		测试a与b是否不相等
+a -gt b		测试a是否大于b
+a -ge b		测试a是否大于等于b
+a -lt b		测试a是否小于b
+a -le b		测试a是否小于等于b
+
+组合与否定测试
+t1 -a t2	AND（交集）：当t1与t2条件同时成立时，才算成立。
+t1 -o t2	OR（并集）：只要t1或t2任一条成立，计算成立。
+! your_test	否定测试：当your_test失败时，则条件成立。
+

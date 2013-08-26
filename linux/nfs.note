@@ -1,0 +1,90 @@
+第一步:检查并安装nfs服务软件包
+nfs-utils
+portmap   	(rhel 5)
+rpcbind	(rhel 6)
+
+
+第二步:NFS服务器配置
+NFS服务的配置文件是/etc/exports
+
+exports文件内容格式:  <输出目录> [客户端1 选项（访问权限,用户映射,其他）] [客户端2 选项（访问权限,用户映射,其他）]
+
+1.输出目录:
+
+输出目录是指NFS系统中需要共享给客户机使用的目录;
+
+2.客户端:
+
+客户端是指网络中可以访问这个RHEL5 NFS输出目录的计算机
+客户端常用的指定方式
+指定ip地址的主机 192.168.1.123
+所有主机 *
+
+3.选项:
+
+选项用来设置输出目录的访问权限、用户映射等.NFS主要有3类选项:
+
+访问权限选项  
+设置输出目录只读 ro  
+设置输出目录读写 rw  
+
+用户映射选项
+all_squash 将远程访问的所有用户及所属组都映射为匿名用户或用户组（nfsnobody）;
+no_all_squash 与all_squash取反（默认设置）;
+root_squash 将root用户及所属组都映射为匿名用户或用户组（默认设置）;
+no_root_squash 与rootsquash取反;
+anonuid=xxx 将远程访问的所有用户都映射为匿名用户,并指定该用户为本地用户（UID=xxx）;
+anongid=xxx 将远程访问的所有用户组都映射为匿名用 户组账户,并指定该匿名用户组账户为本地用户组账户（GID=xxx）;
+
+其它选项
+sync 将数据同步写入内存缓冲区与磁盘中,效率低,但可以保证数据的一致性;
+async 将数据先保存在内存缓冲区中,必要时才写入磁盘;
+
+第三步:NFS服务器配置实例
+
+[root@huyb ~]# mkdir -p /nfs/public  
+[root@huyb ~]# more /etc/exports  
+/nfs/public 192.168.1.24(rw,async) *(ro)  
+
+第四步:维护RHEL5 NFS服务的输出目录列表
+命令exportfs
+
+-a 输出在/etc/exports文件中所定义的所有目录;
+-r 重新读取/etc/exports文件,不需要重起服务;
+-u 停止输出某一目录;
+-v 在屏幕上显示过程;
+
+1.重新输出共享目录
+
+[root@huyb ~]# exportfs -rv  
+exporting 192.168.1.24:/nfs/public  
+
+2.查看NFS服务输出的共享目录
+[root@huyb ~]# showmount -e 192.168.1.102  
+
+3.停止输出所有共享目录
+[root@huyb ~]# exportfs -auv  
+[root@huyb ~]# showmount -e 192.168.1.102  
+Export list for 192.168.1.102: //结果为空; 
+
+4.启动或停止NFS服务器
+[root@huyb ~]# sevice NFSstart|stop|restart  
+[root@huyb ~]# chkconfig --level 35 NFS on //设置NFS自动启动方式; 
+
+5.查询nfs的状态
+[root@huyb ~]# service portmap status  
+[root@huyb ~]# service NFS status 
+
+6.查询nfs服务器的共享目录
+
+showmount 192.168.1.111 查询指定主机的nfs共享目录
+showmount 查询本地主机的
+-a 显示指定的nfs服务器的所有客户端主机及其所连接的目录;
+-d 显示指定的nfs服务器中已被客户端连接的所有输出目录;
+-e 显示指定nfs服务器上所有输出的目录;
+
+第五步:nfs客户端连接
+[root@huyb ~]# mkdir /mnt/huyb  
+[root@huyb ~]# mount -t NFS 192.168.1.102:/nfs/huyb /mnt/huyb  
+[root@huyb ~]# mount | grep nfs 
+[root@huyb ~]# umount /mnt/huyb 

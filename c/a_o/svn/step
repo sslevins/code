@@ -1,0 +1,22 @@
+svn copy svn://192.168.1.110/Breeze/trunk svn://192.168.1.110/Breeze/branches/hemiao/0402 -m ""
+
+svn checkout svn://192.168.1.110/Breeze/brancheks/hemiao/0402 ./Breeze/0402
+
+vi 1.c
+svn commit 1.c
+
+svn checkout svn://192.168.1.110/Breeze/trunk/ ./Breeze/0402
+svn switch svn://192.168.1.110/Breeze/brancheks/hemiao/0402 
+
+192.168.1.110/Breeze/trunk/
+192.168.1.110/Breeze/branches/tom/111/
+192.168.1.110/Breeze/branches/tom/222/
+192.168.1.110/Breeze/branches/jim/222/
+192.168.1.110/Breeze/branches/hello/world/
+
+
+
+
+
+
+

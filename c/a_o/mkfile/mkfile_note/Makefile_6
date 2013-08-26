@@ -1,0 +1,22 @@
+SUBDIR = main lib
+BUILTIN = built-in.o
+
+out: $(SUBDIR)
+	gcc $(^:=/$(BUILTIN)) -o $@
+
+main:
+	make -C main
+
+lib:
+	make -C lib
+# make -C lib
+# make -C main
+
+# 分别进入到$(SUBDIR)目录里，并执行make
+# 即，进入main目录里，按main目录里的Makefile,执行make
+# 进入lib目录里，按lib目录里的Makefile，执行make
+
+clean:
+	rm out
+
+.PHONY: clean 

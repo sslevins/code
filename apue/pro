@@ -1,0 +1,26 @@
+1. client:
+	ls 
+		cli.c  client  Makefile  server  srv.c  temp
+	cd ./work	// chdir();
+	ls
+
+	get cli.c 
+	get cli.c /tmp
+
+
+2. register
+	client:
+		username
+		password
+
+
+3. 	client running / server stop
+	server running / client stop
+
+
+4. 	download file to -> /tmp/fifo 	mkfifo();
+
+5. 	play /tmp/fifo
+
+
+

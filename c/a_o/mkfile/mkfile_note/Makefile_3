@@ -1,0 +1,25 @@
+SRCS = 1.c 2.c main.c
+
+PWD = $(shell pwd)
+
+out: $(SRCS:.c=.o)
+	gcc $^ -o $@
+
+%.o:%.c
+	gcc -c $<
+
+clean:
+	rm *.o out
+
+dep:
+	gcc -MM $(SRCS) > depend
+	# -MM gcc自动生成文件依赖关系
+	# > 重定向描述符。Linux 基础部分内容。
+	# > depend 将前面那个命令的结果输出到当前目录下的depend文件中
+
+sinclude depend
+#将当前目录下的depend文件内容“放”至此处。
+#该文件描述的是.o文件依赖关系，可能会与%.o:%.c有重复，但是允许重复。
+
+.PHONY: clean depend
+#说明clean depend 是伪指令，并和.o文件不同的是，他们并不代表在当前目录下的某个叫clean 和 depend的文件。它们是“纯工作任务“。

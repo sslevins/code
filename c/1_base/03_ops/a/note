@@ -1,0 +1,15 @@
+	按优先级递减顺序排列的运算符
+()			从左到右
++-(一元运算符)		从右到左
+*/			从左到右
++-(二元运算符)		从左到右
+=			从右到左
+
+	类型转换
+1. 当出现在表达式里时，有符号和无符号的 char 和 short 类型都将自动被转换为 int，在需要的情况下，将自动被转换为 unsigned int （如果 short 与 int 有相同的大小，那么 unsigned int 比 int 大：在那种情况下，将把 unsigned short 转换为 unsigned int）。在 K&R 语法下，float 将被自动转换为 double。因为是转换成较大的类型，所以这些转换都被成为提升（promotion）。
+2. 在包含两种数据类型的任何运算里，两个值都是被转换成两种类型里较高的级别。
+3. 类型级别从高到低的顺序里是 long double、double、float、unsigned long long、long long、unsigned long、long、unsigned int 和 int。一个可能的例外是当 long 和 int 具有相同大小时，此时 unsigned int 比 long 的级别更高。之所以 short 和 char 类型没有出现在此清单里，是因为它们已经被提升到 int 或也可能被提升到 unsigned int。
+4. 在赋值语句里，计算的最后结构被转换成将要被赋值的哪个变量的类型。想规则 I 中一样，这个过程可能导致提升，但也可能导致降级，降级是将一个值转换成一个更低级的类型。
+5. 当作为函数的参数被传递时，char 和 short 会被转换为 int，float 会被转换为 double。
+
+

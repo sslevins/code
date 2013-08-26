@@ -1,0 +1,14 @@
+* 函数
+	exit(), 
+	fopen(), fclose(), 
+	getc(), putc(),
+	fprintf(), fscanf(),
+	fgets(), fputs(), 
+	fseek() 
+	fread(), fwrite()
+	feof(), ferror();
+
+	fflush(), setvbuf();
+
+1. 使用C的标准I/O函数处理文件。EOF。
+2. 缓冲和非缓冲I/O

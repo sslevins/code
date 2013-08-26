@@ -1,0 +1,9 @@
+*. 函数
+	gets(), puts(), 
+	strcat() strncat(), 
+	strcmp(), strncmp()
+	strcpy(), strncpy()
+	sprintf(), strchr()
+
+1. 创建和使用字符串
+2. 利用 C 库里的字符串和字符函数创建自己的字符函数

@@ -1,0 +1,22 @@
+gz:
+    tar czvf xxxx.tar.gz a.file b.file c.file d.file
+    tar czvf xxxx.tar.gz dir/
+
+    tar xzvf xxx.tar.gz
+
+bz2:
+    tar cjvf xxxx.tar.bz2 a.file b.file c.file d.file
+    tar cjvf xxxx.tar.bz2 dir/
+
+    tar xjvf xxxx.tar.bz2
+
+
+tar cf xxx.tar a.file b.file c.file
+
+gz/bz2
+
+	xxx.tar --> .gz/bz2
+
+
+
+

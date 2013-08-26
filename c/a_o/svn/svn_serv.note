@@ -1,0 +1,50 @@
+﻿一、安装SVN默认安装到/usr/local/bin下面
+
+二、创建仓库svnadmin create /home/uplooking/svnrepo
+
+/home/uplooking/svnrepo为所创建仓库的路径，理论上可以是任何目录
+
+
+三、修改配置文件/home/uplooking/svnrepo/conf/svnserve.conf
+
+代码 
+#去掉#[general]前面的#号
+[general]
+#匿名访问的权限，可以是read,write,none,默认为read
+anon-access = none
+
+#认证用户的权限，可以是read,write,none,默认为write
+auth-access = write
+
+#密码数据库的路径，去掉前面的#
+password-db = passwd
+
+
+四、修改配置文件passwd。
+
+代码
+[users]
+hello = world
+
+
+六、启动SVN服务器
+
+svnserve --daemon --root /home/uplooking/svnrepo
+其中-d表示在后台运行，-r指定服务器的根目录，--listen-host来指定监听的ip地址.
+这样访问服务器时就可以直接用 svn://服务器ip 来访问了。
+
+我们可以在svn客户端中通过svn://192.168.1.16来访问svn服务器
+
+七、停止SVN服务器：killall svnserve
+
+
+八、开放服务器端口
+
+svn默认端口是3690，你需要在防火墙上开放这个端口。
+
+/sbin/iptables -A INPUT -i eth0 -p tcp --dport 3690 -j ACCEPT
+
+/sbin/service iptables save
+
+你也可以通过svnserve的--listen-port选项来指定一个已经开放的其他端口,不过这样的话客户端使用也必须家上端口,如svn://192.168.1.200:9999/.
+

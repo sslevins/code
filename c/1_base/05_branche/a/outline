@@ -1,0 +1,11 @@
+*. 关键字：
+	if、else、switch、continue、break、case、default、goto
+
+*. 运算符：
+	&& || ?:
+
+1. 怎样使用 if 和 if else 语句以及如何嵌套使用它们
+2. C 的条件运算符
+3. switch 语句
+4. break、continue 和 goto 跳转
+

@@ -1,0 +1,91 @@
+
+main.o:     file format elf32-i386
+main.o
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000051  00000000  00000000  00000034  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         0000000c  00000000  00000000  00000088  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+  2 .bss          00000004  00000000  00000000  00000094  2**2
+                  ALLOC
+  3 .rodata       00000011  00000000  00000000  00000094  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .comment      0000002d  00000000  00000000  000000a5  2**0
+                  CONTENTS, READONLY
+  5 .note.GNU-stack 00000000  00000000  00000000  000000d2  2**0
+                  CONTENTS, READONLY
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 main.c
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .data	00000000 .data
+00000000 l    d  .bss	00000000 .bss
+00000000 l    d  .rodata	00000000 .rodata
+00000008 l     O .data	00000004 static_var.1244
+00000000 l     O .bss	00000004 static_var2.1245
+00000000 l    d  .note.GNU-stack	00000000 .note.GNU-stack
+00000000 l    d  .comment	00000000 .comment
+00000000 g     O .data	00000004 global_init_var
+00000004       O *COM*	00000004 global_uninit_var
+00000004 g     O .data	00000004 p
+00000000 g     F .text	0000001b func1
+00000000         *UND*	00000000 printf
+0000001b g     F .text	00000036 main
+
+
+Contents of section .text:
+ 0000 5589e583 ec188b45 08894424 04c70424  U......E..D$...$
+ 0010 0c000000 e8fcffff ffc9c355 89e583e4  ...........U....
+ 0020 f083ec20 c7442418 01000000 8b150800  ... .D$.........
+ 0030 0000a100 0000008d 04020344 24180344  ...........D$..D
+ 0040 241c8904 24e8fcff ffffb800 000000c9  $...$...........
+ 0050 c3                                   .               
+Contents of section .data:
+ 0000 54000000 00000000 55000000           T.......U...    
+Contents of section .rodata:
+ 0000 68656c6c 6f20776f 726c6400 2564200a  hello world.%d .
+ 0010 00                                   .               
+Contents of section .comment:
+ 0000 00474343 3a202847 4e552920 342e342e  .GCC: (GNU) 4.4.
+ 0010 35203230 31313032 31342028 52656420  5 20110214 (Red 
+ 0020 48617420 342e342e 352d3629 00        Hat 4.4.5-6).   
+
+Disassembly of section .text:
+
+00000000 <func1>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 18             	sub    $0x18,%esp
+   6:	8b 45 08             	mov    0x8(%ebp),%eax
+   9:	89 44 24 04          	mov    %eax,0x4(%esp)
+   d:	c7 04 24 0c 00 00 00 	movl   $0xc,(%esp)
+			10: R_386_32	.rodata
+  14:	e8 fc ff ff ff       	call   15 <func1+0x15>
+			15: R_386_PC32	printf
+  19:	c9                   	leave  
+  1a:	c3                   	ret    
+
+0000001b <main>:
+  1b:	55                   	push   %ebp
+  1c:	89 e5                	mov    %esp,%ebp
+  1e:	83 e4 f0             	and    $0xfffffff0,%esp
+  21:	83 ec 20             	sub    $0x20,%esp
+  24:	c7 44 24 18 01 00 00 	movl   $0x1,0x18(%esp)
+  2b:	00 
+  2c:	8b 15 08 00 00 00    	mov    0x8,%edx
+			2e: R_386_32	.data
+  32:	a1 00 00 00 00       	mov    0x0,%eax
+			33: R_386_32	.bss
+  37:	8d 04 02             	lea    (%edx,%eax,1),%eax
+  3a:	03 44 24 18          	add    0x18(%esp),%eax
+  3e:	03 44 24 1c          	add    0x1c(%esp),%eax
+  42:	89 04 24             	mov    %eax,(%esp)
+  45:	e8 fc ff ff ff       	call   46 <main+0x2b>
+			46: R_386_PC32	func1
+  4a:	b8 00 00 00 00       	mov    $0x0,%eax
+  4f:	c9                   	leave  
+  50:	c3                   	ret    

@@ -1,0 +1,95 @@
+库从本质上来说是一种可执行代码的二进制格式，可以被载入内存中执行。库分静态库和动态库两种。 
+静态库和动态库的区别
+
+1. 静态函数库
+
+这类库的名字一般是libxxx.a；利用静态函数库编译成的文件比较大，因为整个 函数库的所有数据都会被整合进目标代码中，他的优点就显而易见了，即编译后的执行程序不需要外部的函数库支持，因为所有使用的函数都已经被编译进去了。当然这也会成为他的缺点，因为如果静态函数库改变了，那么你的程序必须重新编译。
+
+2. 动态函数库
+
+这类库的名字一般是libxxx.so;相对于静态函数库，动态函数库在编译的时候 并没有被编译进目标代码中，你的程序执行到相关函数时才调用该函数库里的相应函数，因此动态函数库所产生的可执行文件比较小。由于函数库没有被整合进你的程序，而是程序运行时动态的申请并调用，所以程序的运行环境中必须提供相应的库。动态函数库的改变并不影响你的程序，所以动态函数库的升级比较方便。
+
+linux系统有几个重要的目录存放相应的函数库，如/lib /usr/lib。
+
+静态库的使用
+
+静态库的操作工具：gcc和ar 命令。 
+
+编写及使用静态库 
+
+(1) 设计库源码 		pr1.c 和 pr2.c 
+
+(2) 编译.c 文件 	cc -O -c pr1.c pr2.c 
+
+(3) 链接静态库 	ar -rsv libpr.a pr1.o pr2.o 
+为了在编译程序中正确找到库文件,静态库必须按照 lib[name].a 的规则命名,如下例中[name]=pr. 
+ar -t libpr.a 	将库的目录写至标准输出。
+
+(4)  调用库函数代码 main.c 
+
+(5)  编译链接选项 	gcc -o main main.c -L./ -lpr 
+-L 及-l 参数放在后面.其中,-L 加载库文件路径,-l 指明库文件名字. 
+
+(6)执行目标程序 
+
+
+##############################################
+
+动态库的使用
+
+编写动态库 
+
+(1)设计库代码 	pr1.c 
+
+(2)生成动态库	gcc -fpic -shared -o libdl.so pr1.c  
+.so	shared object file	//库
+.o	object file
+
+-fpic	Generate position-independent code (PIC) suitable for use in a shared library, if supported for the target machine.
+
+-shared 	Produce a shared object which can then be linked with other objects to form an executable.  
+
+[bill@billstone make_lib]$ 
+
+动态库的隐式调用 
+
+在编译调用库函数代码时指明动态库的位置及名字
+gcc -o tdl main.c ./dl.so 
+
+当动态库的位置或名字发生改变时,  程序将无法正常运行;  
+而动态库取代静态库的好处之一则是通过更新动态库而随时升级库的内容. 
+
+[bill@billstone make_lib]$ gcc -o tds main.c –ld1 –L.
+此时还不能立即./tds，因为在动态函数库使用时，会查找/usr/lib、/lib目录下的动态函数库，而此时我们生成的库不在里边。 
+这个时候有好几种方法可以让他成功运行： 最直接最简单的方法就是把libxxx.so拉到/usr/lib或/lib中去。 
+还有一种方法 export LD_LIBRARY_PATH=$(pwd) 
+
+库依赖的查看
+使用ldd命令来查看执行文件依赖于哪些库。
+
+该命令用于判断某个可执行的 binary 档案含有什么动态函式库。
+[root@test root]# ldd [-vdr] [filename]
+参数说明：
+--version　　打印ldd的版本号
+-v --verbose　　打印所有信息，例如包括符号的版本信息
+-d --data-relocs　　执行符号重部署，并报告缺少的目标对象（只对ELF格式适用）
+-r --function-relocs　　对目标对象和函数执行重新部署，并报告缺少的目标对象和函数（只对ELF格式适用）
+--help 用法信息。
+
+如果命令行中给定的库名字包含'/'，这个程序的libc5版本将使用它作为库名字；否则它将在标准位置搜索库。运行一个当前目录下的共享库，加前缀"./"。
+
+
+静态库链接时搜索路径顺序：
+1. ld会去找GCC命令中的参数-L
+2. 再找gcc的环境变量LIBRARY_PATH
+3. 再找内定目录 /lib /usr/lib /usr/local/lib 这是当初compile gcc时写在程序内的
+
+动态链接时、执行时搜索路径顺序:
+1. 编译目标代码时指定的动态库搜索路径
+2. 环境变量LD_LIBRARY_PATH指定的动态库搜索路径
+3. 默认的动态库搜索路径/lib
+4. 默认的动态库搜索路径/usr/lib
+
+有关环境变量：
+LIBRARY_PATH环境变量：指定程序静态链接库文件搜索路径
+LD_LIBRARY_PATH环境变量：指定程序动态链接库文件搜索路径

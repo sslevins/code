@@ -1,0 +1,54 @@
+gcc test.c -o test $(mysql_config --cflags) $(mysql_config --libs)
+gcc test.c -o test $(mysql_config --cflags --libs)
+
+
+
+
+
+MYSQL * mysql_init(MYSQL *);
+	初始化连接结构体
+
+
+MYSQL * mysql_read_connect(
+		MYSQL* connection, 
+		const char * server_host,
+		const char * sql_user_name,
+		const char * sql_password, 
+		const char * db_name,
+		unsigned int port_number, 
+		const char * unix_socket_name, 
+		unsigned int flags				// CLIENT_FOUND_ROWS
+);
+	连接
+
+void mysql_close(MYSQL * connection);
+	使用完连接后，关闭连接
+
+unsigned int mysql_errno(MYSQL * connection);
+char * mysql_error(MYSQL * connection);
+	获得错误码，及对应的错误信息。
+
+int mysql_query(MYSQL * connection, const char * query);
+	执行SQL语句，成功返回0
+
+my_ulonglong mysql_affected_rows(MYSQL * connection);
+	返回受之前执行的update、insert或delete操作所影响的行数
+
+mysql> select last_insert_id();
+
+MYSQL_RES * mysql_store_result(MYSQL * connection);
+MYSQL_RES * mysql_use_result(MYSQL * connection);
+	获得所有的数据
+
+MYSQL_ROW mysql_fetch_row(MYSQL_RES * result);
+	从数据中提取一行
+
+unsiged int mysql_field_count(MYSQL * connection);
+	返回结果集中字段（列）的数目
+
+MYSQL_FIELD * mysql_fetch_field(MYSQL_RES * result);
+
+
+
+
+

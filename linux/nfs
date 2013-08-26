@@ -1,0 +1,12 @@
+vi /etc/selinux/config	disabled
+chkconfig iptables off
+
+vi /etc/exports
+
+service nfs start/restart/stop
+
+showmont -e serv_ip
+
+mount -t nfs 192.168.1.110:/xxx/xxxx/xxx /mnt
+
+umount /mnt

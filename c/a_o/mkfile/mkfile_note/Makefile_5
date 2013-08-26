@@ -1,0 +1,13 @@
+SUBDIR = main lib
+BUILTIN = built-in.o
+
+# 取SUBDIR的值，:= 表示后面衔接上"/$(BUILTIN)"最后结果等同于
+#out: main/$(BUILTIN) lib/$(BUILTIN) 
+#即，out: main/built-in.o lib/built-in.o 
+out: $(SUBDIR:=/$(BUILTIN))
+	gcc $^ -o $@
+
+clean:
+	rm out
+
+.PHONY: clean 

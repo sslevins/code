@@ -1,0 +1,14 @@
+
+map c				产生一个空的map/multimap, 其中不含任何元素
+map c1(c2)
+map c(beg, end)
+
+map<key, elem>				一个map，以less<>(operator<)为排序准则
+map<key, elem, op>			一个map，以op为排序准则
+
+count(kye) 				返回“键值等于key”的元素个数
+find(key)				返回“键值等于key”的第一个元素，找不到就返回end()
+lower_bound(key)		返回“键值为key”之元素的第一个可安插位置，也就是“键值>=kye”的第一个元素位置
+upper_bound(key)		返回“键值为key”之元素的最后一个可安插位置，也就是“键值>key”的第一个元素位置
+
+

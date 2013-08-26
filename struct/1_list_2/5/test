@@ -1,0 +1,7 @@
+_node_1->next = _node_2->next;
+_node_2->next->prev = _node_1;
+_node_1->prev = _node_2;
+
+_node_2->prev = _node_2;
+_node_2->next = _node;
+_node_2->next = _node_1;

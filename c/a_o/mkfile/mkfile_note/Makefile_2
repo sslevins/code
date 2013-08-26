@@ -1,0 +1,15 @@
+SRCS = 1.c 2.c main.c
+
+PWD = $(shell pwd)
+
+out: $(SRCS:.c=.o)
+# 1.c 2.c main.c --> 1.o 2.o main.o
+	gcc $^ -o $@
+
+%.o:%.c
+	gcc -c $<
+
+clean:
+	rm *.o out
+
+.PHONY: clean

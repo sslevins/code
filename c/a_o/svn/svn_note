@@ -1,0 +1,56 @@
+svnadmin create /home/uplooking/svnrepo 
+
+svn import base/ file:///home/uplooking/svnrepo/myproject -m "initial import"
+svn list file:///home/uplooking/svnrepo/myproject
+svn checkout file:///home/uplooking/svnrepo/myproject ./myproject
+
+svn diff -r HEAD mk-all.sh
+svn diff -r BASE:PREV mk-all.sh 
+svn diff -r COMMITTED:PREV mk-all.sh
+svn diff --revision 1:2 mk-all.sh
+
+svn log -r HEAD
+svn log -r {"2012-8-2 21:00"}
+svn log -r {2012-8-2T21:00}
+svn log --revision {20120802}:{20120804}
+
+HEAD表示在版本库中最新的版本，记住一定是版本库，而不是某个working-copy, 另外需要注意的是，这里提到版本库是指对应working-copy的那个分支或主干。
+COMMITTED表示在working-copy中最近的一次提交版本。
+PREV表示在working-copy中最近的倒数第二次提交版本，也就是COMMITTED - 1。
+BASE表示在working-copy中每个文件基准版本，会经常变动，并且有统一working-copy的版本的意图。
+
+svn checkout svn://192.168.1.110/xxxxxxx
+svn checkout svn://192.168.1.110/xxxxxxx xxxxxx
+svn checkout -r 10 svn://192.168.1.110/xxxxxx xxxxxx
+svn info working-copy
+
+svn update xxx.c aaa/ bbb/
+
+svn add lib
+svn status [--show-updates]
+svn status lib
+svn commit -m "xxxxxx"
+svn commit -m "xxxxxx" lib
+
+svn copy a.txt b.txt
+
+svn log a.txt
+svn log -v a.txt
+
+svn move a.c b.c
+svn diff a.c
+svn diff -r 19:21 a.c
+svn diff -r BASE:HEAD svn://xxxxxx/a.c
+
+svn revert a.c
+svn resolved a.c
+
+svn blame a.c
+
+svn merge -r 27:26 xxx.c
+svn merge -r 27:26 .
+
+svn mkdir -m "xxxxx" svn://192.168.1.110/sesame/branches
+svn copy -m "xxxxxx" svn://192.168.1.110/trunk svn://192.168.1.110/branches/RB-1.0
+
+svn merge -r 45:HEAD svn://192.168.1.110/sesame/branches/RB-1.0

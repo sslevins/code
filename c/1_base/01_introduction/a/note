@@ -1,0 +1,11 @@
+C 语言的关键字列表
+auto 		enum		restrict	unsigned
+break		extern		return		vold
+case		float		short		volatile
+char		for			signed		while
+const		goto		sizeof		
+continue	if			static		
+default		inline		struct		
+do			int			switch
+double		long		typedef
+else		register 	union

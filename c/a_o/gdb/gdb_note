@@ -1,0 +1,19 @@
+gcc -g
+run
+backtrace
+print
+list
+break
+next
+cont
+display
+commands
+	cont
+	end
+
+info break/display
+disable break 1
+enable display 1
+
+set variable n = 100
+

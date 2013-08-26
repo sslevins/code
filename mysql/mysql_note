@@ -1,0 +1,171 @@
+use crashcourses;
+show dtabases;
+show tables;
+show columns from customers;
+show grants;
+
+select prod_name from products;
+select prod_id, prod_name, prod_price from products;
+select * from products;
+select distinct vend_id from products;
+select prod_name from products limit 5;
+select prod_name from products limit 5, 5;
+select products.prod_name from products;
+select products.prod_name from crashcourse.products;
+
+
+select prod_name from products;
+select prod_name from products order by prod_name;
+select prod_id, prod_price, prod_name from products order by grod_price, prod_name;
+select prod_id, prod_price, prod_name from products order by prod_price desc;
+select prod_id, prod_price, prod_name from products order by prod_price desc, prod_name;
+select prod_price from products order by prod_price desc limit 1;
+
+
+select prod_name, prod_price from products where prod_price = 2.50;
+select prod_name, prod_price from products where prod_name = 'fuses';
+select prod_name, prod_price from products where prod_price < 10;
+select prod_name, prod_price from products where prod_price <= 10;
+select vend_id, prod_name from products where vend_id <> 1003;
+select vend_id, prod_name from products where vend_id != 1003;
+select prod_name, prod_price from products where prod_price bewteen 5 and 10;
+select prod_name from products where prod_price is NULL;
+select cust_id from customers where cust_email is null;
+
+
+select prod_id, prod_price, prod_name from products where vend_id = 1003 and prod_price <= 10;
+select prod_name, prod_price from products where and vend_id = 1002 or vend_id = 1003;
+select prod_name, prod_price from products where vend_id = 1002 or vend_id = 1003;
+select prod_name, prod_price from products where vend_id = 1002 or vend_id = 1003 and prod_price >= 10;
+select prod_name, prod_price from products where (vend_id = 1002 or vend_id = 1003) and prod_price >= 10;
+select prod_name, prod_price from products where vend_id in (1002, 1003) order by prod_name;
+select prod_name, prod_price from products where vend_id = 1002 or vend_id = 1003 order by prod_name;
+select prod_name, prod_price from products where vend_id not in (1002, 1003) order by prod_name;
+
+
+select prod_id, prod_name from products where prod_name like 'jet%';
+select prod_id, prod_name from products where prod_name like '%anvil%';
+select prod_name from products where prod_name like 's%e';
+{
+select prod_id, prod_name from products where prod_name like '_ ton anvil';
+select prod_id, prod_name from products where prod_name like '% ton anvil';
+}
+
+
+select prod_name from products where prod_name regexp '1000' order by prod_name;
+select prod_name from products where prod_name regexp '.000' order by prod_name;
+{
+select prod_name from products where prod_name like '1000' order by prod_name;
+select prod_name from products where prod_name regexp '1000' order by prod_name;
+}
+select prod_name from products where prod_name regexp '1000|2000|3000' order by prod_name;
+select prod_name from products where prod_name regexp '[123] Ton' order by prod_name;
+select prod_name from products where prod_name regexp '1|2|3 Ton' order by prod_name;
+{
+select vend_name from vendors where vend_name regexp '.' order by vend_name;
+select vend_name from vendors where vend_name regexp '\\.' order by vend_name;
+select vend_name from vendors where vend_name regexp '\\\' order by vend_name;
+}
+select prod_name from products where prod_name regexp '\\([0-9] sticks?\\)' order by prod_name;
+select prod_name from products where prod_name regexp '^[0-9\\.]' order by prod_name;
+
+
+select concat(vend_name, ' (', vend_country, ')') from vendors order by vend_name;
+select concat(vend_name, ' (', vend_country, ')') as vend_title from vendors order by vend_name;
+select prod_id, quantity, item_price from orderitems where order_num = 20005;
+select prod_id, quantity, item_price, quantity*item_price as expanded_price from orderitems where order_num = 20005;
+
+
+select avg(prod_price) as avg_price from products;
+select avg(prod_price) as avg_price from products where vend_id = 1003;
+select count(*) as num_cust from customers;
+select max(prod_price) as max_price from products;
+select min(prod_price) as min_price from products;
+select sum(quantity) as items_ordered from orderitems where order_num = 20005;
+select sum(item_price*quantity) as total_price from orderites where order_num = 20005;
+select avg(distinct prod_price) as avg_price from products where vend_id = 1003;
+select count(*) as num_items, min(prod_price) as price_min, max(prod_price) as price_max, avg(prod_price) as price_avg from products;
+
+
+select count(*) as num_prods from products where vend_id = 1003;
+select vend_id, count(*) as num_prods from products group by vend_id;
+select cust_id, count(*) as orders from orders group by cust_id having count(*) >= 2;
+select vend_id, count(*) as num_prods from products where prod_price >= 10 group by vend_id having count(*) >= 2;
+select vend_id, count(*) as num_prods from products group by vend_id having count(*) >= 2;
+select order_num, sum(quantity*item_price) as ordertotal from orderitems group by order_num having sum(quantity*item_price) >= 50 order by ordertotal;
+
+
+select cust_id from orders where order_num in (select order_num from orderitems where prod_id = 'TNT2');
+select cust_name in (select cust_id from orders where order_num in (select ordre_num from orderitems where prod_id = 'TNT2'))
+
+
+{
+select vend_name, prod_name, prod_price from vendors, products where vendors.vend_id = products.vend_id order by vend_name, prod_name;
+select vend_name, prod_name, prod_price from vendors, products order by vend_name, prod_name;
+}
+select prod_name, vend_name, prod_price, quantity from orderitems, products, vendors where products.vend_id = vendors.vend_id and orderitems.prod_id = products.prod_id and order_num = 20005;
+select cust_name, cust_contact from customers as c, orders as o, orderitems as oi where c.cust_id = o.cust_id and oi.order_num = o.order_num and prod_id = 'TNT2';
+select vend_id, prod_id, prod_price from products where prod_price <= 5 union select vend_id, prod_id, prod_price from products where vend_id in (1001, 1002);
+
+
+insert into customers values(null, 'Rod Johnson', '100 Main Street', 'Los Angeles', 'CA', '10000', 'USA', NULL, NULL);
+insert into customers(cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country, cust_contact, cust_email) values(null, 'Rod Johnson', '100 Main Street', 'Los Angeles', 'CA', '10000', 'USA', NULL, NULL);
+insert into customers values(null, 'Rod Johnson', '100 Main Street', 'Los Angeles', 'CA', '10000', 'USA', NULL, NULL), ('M Martian', '42 Galaxy Way', 'New York', 'NY', '11000', 'USA');
+insert into customers(cust_id, cust_contact, cust_email, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country) select cust_id, cust_contact, cust_email, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country from custnew;
+
+update customers set cust_email = 'elmer@fudd.com' where cust_id = 10005;
+update customers set cust_name = 'The Fudds', cust_email = 'elmer@fudd.com' where cust_id = 10005;
+delete from customers where cust_id = 10006;
+delte from customers;
+
+
+create table customers
+(
+	cust_id		int			not null	auto_increment,
+	cust_name	char(50)	not null,
+	cust_adress	char(50)	null,
+	cust_city	char(50)	null,
+	cust_stat	char(5)		null,
+	cust_zip	char(10)	null,
+	cust_country char(50)	null,
+	cust_contact char(50)	null,
+	cust_email	char(255)	null,
+	primary key (cust_id)
+) engine=InnoDB;
+
+
+alter table vendors add vend_phone char(20);
+alter table vendors drop column vendor_phone;
+drop table customers2;
+rename table customers2 to customers;
+
+
+create user ben@localhost identified by 'uplooking';
+rename user ben to hello;
+drop user hello;
+
+show grants for ben;
+grant select on crashcourse.* to ben;
+grant usage on *.* to ben@'192.168.1.110';
+grant all on *.* to ben@'192.168.0.0/255.255.255.0';
+grant alter
+grant create
+grant delete
+grant drop
+grant index
+grant insert
+grant locak tables
+grant select
+grant update
+grant all
+
+revoke 
+revoke select on crashcourse.* to ben;
+
+set password for ben = password('hello');
+set password = password('world');
+
+mysql -u root password 123456
+set password=password('123456');
+
+mysql -u root -p

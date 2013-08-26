@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/kuaijin.png</file>
+        <file>image/kuaitui.png</file>
+        <file>image/list.bmp</file>
+        <file>image/mute.png</file>
+        <file>image/nex.png</file>
+        <file>image/nomute.png</file>
+        <file>image/pause.png</file>
+        <file>image/play.png</file>
+        <file>image/prev.png</file>
+        <file>image/sound.bmp</file>
+        <file>image/stop.png</file>
+    </qresource>
+</RCC>

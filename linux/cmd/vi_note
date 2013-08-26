@@ -1,0 +1,80 @@
+	调用 vim
+vim filename			从 filename 的第 1 行开始编辑
+vim + n filename		从 filename 的第 n 行开始编辑
+vim + filename			从 filename 的最后一行开始编辑
+vim + /pattern filename		从 filename 的第 1 个包含 pattern 的行开始编辑
+vim -r filename			在系统崩溃后恢复 filename
+vim -R filename			以只读方式编辑 filename
+
+
+	根据度量单位移动光标
+空格、l、方向右移键		右移一个字符
+h、方向左移键			左移一个字符
+w				右移一个字
+b				左移一个字
+$				移到行的末尾
+0（零）				移到行的开始
+RETURN				移到下一行的还是
+j、方向下键			下移一行
+-				移到前一行的开始
+k、方向上键			上移一行
+%				在同一嵌套层次内移动到匹配的同类型括号
+
+
+	 查看工作缓冲区
+CONTROL+d			上移半个窗口
+CONTROL+u			下移半个窗口
+CONTROL+f 或 PAGE DOWN		上移一个串口
+CONTROL+b 或 PAGE UP		下移一个窗口
+nG				移到第n行（如果没有，就移到最后一行）
+H				移到窗口顶部
+M				移到窗口中间
+L				移到窗口底部
+
+	添加文本
+i				在光标前
+I 				在行的head
+a				在光标后
+A				在行的末尾
+o				在当前行的下面打开一个新的空白行
+O				在当前行的上面打开一个新的空白行
+r				替换当前字符
+R				从当前字符开始替换，知道按下 ESC 键
+
+
+	删除和修改文本
+nx				从当前字符开始，删除 n 个字符
+nX				删除当前字符前的 n 个字符，从当前字符的前一个字符开始删除
+ndd				删除n行
+D				删除到行的末尾
+n~				改变后续 n 个字符的大小写
+S				替换整个行
+ncc				修改 n 行
+C				修改到最后
+
+
+	搜索命令
+/rexpRETURN			向前搜索rexp
+?rexpRETURN			向后搜索rexp
+n				重复刚才的搜索
+N				以相反的方向，重复刚才的搜索
+/RETURN				向前重复刚才的搜索
+？RETTURN			向后重复刚才的搜索
+
+
+	替换命令个格式
+:[address]s/search-string/replacement-string[/g]
+其中，address 为一个行号或者是用逗号隔开的两个行好。句点（.）代表当前行。search-string 是正则表达式，可以是简单的字符串。 replacement-string 为替代字符串。g 表示进行全局替换。
+
+
+
+:w filename			将工作缓冲区内容写回到 filename 文件（若没有指定 filename，就写回当前文件）
+:q				退出 vim
+ZZ				将工作缓冲区内容写回当前文件并退出vim
+:f、CONTROL+g			显示文件名、状态、当前行号、工作缓冲区的行数和当前行之间部分在工作缓冲区中所占百分比
+
+高级命令
+:e filename			编辑文件 filename， 
+
+mx				设置标记x，其中 x 为从 a~z 的26个字母中的一个
+'x				将光标移到 x 标记行
